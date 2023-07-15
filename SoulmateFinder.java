@@ -61,6 +61,7 @@ public class SoulmateFinder
                 System.out.println("Where did your journey end?");
                 int end = kbd.nextInt();
                 System.out.println("Number of potential soulmates: " + getTravellers(start, end));
+                break;
             }
             rdr.close();
         } catch (FileNotFoundException e){
