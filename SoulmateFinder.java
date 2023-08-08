@@ -1,74 +1,69 @@
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.util.*;
+import java.io.*;
 
-public class SoulmateFinder
-{
+public class SoulmateFinder {
     public static Scanner kbd = new Scanner(System.in);
 
-    public static boolean overlappingJourneys(int s1, int e1, int s2, int e2)
-    {
-        if (e1 < s2 || e2 < s1)
-        {
-            return false;
-        }
-        else if (e1 == s2)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+    //Boolean to check if there is an overlap
+    public static boolean overlappingJourneys(int start1, int end1, int start2, int end2) {
+        return !(end1 < start2 || end2 < start1);
     }
-    
-    public static int getTravellers(int start, int end)
-    {
-        System.out.println("Enter the overall number of travellers on the train: ");
-        int noOfTravellers = kbd.nextInt();
-        int noOfPotentialSoulmates = 0;
-        for( int i = 0; i < noOfTravellers ; i ++)
-        {
-            System.out.println("Enter the traveller's name: ");
-            String name = kbd.next();
-            System.out.println("Enter the boarding station: ");
-            int boardingStation = kbd.nextInt();
-            System.out.println("Enter the exit station: ");
-            int exitStation = kbd.nextInt();
-            
-            if (!(end < boardingStation || exitStation < start || end == boardingStation))
-            {
-                noOfPotentialSoulmates ++;
+
+    //Method to count the number of overlaps
+    public static int getPotentialSoulmates(int start, int end, Scanner inputFileScanner) {
+        int potentialSoulmates = 0;
+
+        while (inputFileScanner.hasNextLine()) {
+            String line = inputFileScanner.nextLine();
+            String[] parts = line.split(" ");
+
+            String name = parts[0];
+            int boardingStation = Integer.parseInt(parts[1]);
+            int exitStation = Integer.parseInt(parts[2]);
+
+            if (end >= boardingStation && exitStation >= start) {
+                potentialSoulmates++;
                 System.out.println(name + " might be the soulmate.");
-            }
-            else
-            {
+            } else {
                 System.out.println(name + " is not the soulmate.");
             }
         }
-        return noOfPotentialSoulmates;
+
+        return potentialSoulmates;
     }
-    
-    public static void main(String args[])
-    {
-        System.out.println("Where did your journey start?");
-        int start = kbd.nextInt();
-        System.out.println("Where did your journey end?");
-        int end = kbd.nextInt();
-        System.out.println("Number of potential soulmates: " + getTravellers(start, end));
-    }   
-    
-    public static boolean overlappingLongJourneys(int Q4S1, int Q4E1,int Q4S2,int Q4E2,int n)
-    {
-        boolean overlap;
-        if(n <= (Q4E2-Q4S2))
-        {
-            overlap = true;
+
+    //Main method that asks for user input to compare with access-log-1.txt
+    public static void main(String args[]) {
+        try {
+            File file = new File("access-log-1.txt");
+            Scanner scanner = new Scanner(file);
+
+            System.out.println("Where did your journey start?");
+            int start = getInputInt();
+            System.out.println("Where did your journey end?");
+            int end = getInputInt();
+
+            int potentialSoulmates = getPotentialSoulmates(start, end, scanner);
+            System.out.println("Number of potential soulmates: " + potentialSoulmates);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
         }
-        else
-        {
-            overlap = false;
+    }
+
+    //Method to ensure input is valid
+    public static int getInputInt() {
+        int input = -1;
+        boolean validInput = false;
+        
+        while (!validInput) {
+            try {
+                input = kbd.nextInt();
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                kbd.next();
+            }
         }
-        return overlap;
-    } 
+        return input;
+    }
 }
