@@ -1,0 +1,3 @@
+# soulmate-finder
+Welcome to SoulmateFinder, a Java program designed to identify potential soulmates through shared journeys. This program takes your journey start and end points, compares them with data from an input file, and highlights individuals with overlapping journeys.
+The core functionality of SoulmateFinder lies in the `overlappingJourneys` method, which assesses whether two journey intervals intersect. The `getPotentialSoulmates` method then scans the input data to identify individuals whose journeys overlap with yours. For each potential soulmate, the program offers a notification and a count of potential connections is presented at the end.
